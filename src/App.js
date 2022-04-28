@@ -1,5 +1,7 @@
 import "./App.css";
 import { useState } from "react";
+import TodoForm from "./components/TodoForm";
+import TodoFooter from "./components/TodoFooter";
 
 function App() {
   const [boards, setBoards] = useState([
@@ -23,7 +25,7 @@ function App() {
     },
     {
       id: 3,
-      title: "In progress",
+      title: "Done",
       items: [
         { id: Math.random(), title: "Learn Mathematic" },
         { id: Math.random(), title: "Learn Geology" },
@@ -107,6 +109,13 @@ function App() {
   /* ----------------------------------------------------------------- */
   return (
     <div className="App">
+      <div className="todoForm-title">Add new tasks</div>
+      <TodoForm
+        onAdd={(text) => {
+          boards[0].items.push({ id: Math.random(), title: text });
+          setBoards([...boards]);
+        }}
+      />
       {boards.map((board) => (
         <div
           className="board"
@@ -130,6 +139,13 @@ function App() {
           ))}
         </div>
       ))}
+      <TodoFooter
+        boards={boards}
+        onClearCompleted={() => {
+          boards[2].items = [];
+          setBoards([...boards]);
+        }}
+      />
     </div>
   );
 }
