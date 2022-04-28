@@ -2,6 +2,7 @@ import "./App.css";
 import { useState } from "react";
 import TodoForm from "./components/TodoForm";
 import TodoFooter from "./components/TodoFooter";
+import TodoBoards from "./components/TodoBoards";
 
 function App() {
   const [boards, setBoards] = useState([
@@ -20,7 +21,7 @@ function App() {
       items: [
         { id: Math.random(), title: "Learn History" },
         { id: Math.random(), title: "Learn Biology" },
-        { id: Math.random(), title: "Learn XML" },
+        { id: Math.random(), title: "Learn Physics" },
       ],
     },
     {
@@ -28,8 +29,8 @@ function App() {
       title: "Done",
       items: [
         { id: Math.random(), title: "Learn Mathematic" },
-        { id: Math.random(), title: "Learn Geology" },
-        { id: Math.random(), title: "Learn Psycology" },
+        { id: Math.random(), title: "Learn React" },
+        { id: Math.random(), title: "Learn Node" },
       ],
     },
   ]);
@@ -41,8 +42,6 @@ function App() {
 
   /* ------ Drag&Drop handler functions ------ */
   function handleDragStart(evn, board, item) {
-    console.log("DragStart", evn.target);
-
     evn.target.classList.add("dragging");
     setCurrentBoard(board);
     setCurrentItem(item);
@@ -50,13 +49,9 @@ function App() {
 
   function handleDragOver(evn) {
     evn.preventDefault();
-
-    console.log("dragOver");
   }
 
   function handleDragEnd(evn) {
-    console.log("DragEnd", evn.target);
-
     dropIndex = undefined;
     currentIndex = undefined;
     evn.target.classList.remove("dragging");
@@ -82,7 +77,6 @@ function App() {
         return br;
       })
     );
-    console.log("drop:", evn.target);
   }
 
   function handleCardDrop(evn, board) {
@@ -109,36 +103,23 @@ function App() {
   /* ----------------------------------------------------------------- */
   return (
     <div className="App">
-      <div className="todoForm-title">Add new tasks</div>
+      <div className="todoForm-title">Add new tasks !!!</div>
       <TodoForm
         onAdd={(text) => {
           boards[0].items.push({ id: Math.random(), title: text });
           setBoards([...boards]);
         }}
       />
-      {boards.map((board) => (
-        <div
-          className="board"
-          key={board.id}
-          onDragOver={(evn) => handleDragOver(evn)}
-          onDrop={(evn) => handleCardDrop(evn, board)}
-        >
-          <div className="board-title">{board.title}</div>
-          {board.items.map((item) => (
-            <div
-              key={item.id}
-              className="item"
-              draggable="true"
-              onDragStart={(evn) => handleDragStart(evn, board, item)}
-              onDragOver={(evn) => handleDragOver(evn)}
-              onDragEnd={(evn) => handleDragEnd(evn)}
-              onDrop={(evn) => handleDrop(evn, board, item)}
-            >
-              {item.title}
-            </div>
-          ))}
-        </div>
-      ))}
+
+      <TodoBoards
+        boards={boards}
+        handleDragStart={handleDragStart}
+        handleDragOver={handleDragOver}
+        handleDragEnd={handleDragEnd}
+        handleDrop={handleDrop}
+        handleCardDrop={handleCardDrop}
+      />
+
       <TodoFooter
         boards={boards}
         onClearCompleted={() => {

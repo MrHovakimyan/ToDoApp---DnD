@@ -5,7 +5,7 @@ function TodoFooter({ boards, onClearCompleted }) {
 
   return (
     <div className="todoFooter">
-      <span>
+      <span className="itemsQuantity">
         {completedTasks} /{" "}
         {boards[0].items.length + boards[1].items.length + boards[2].items.length} Completed
       </span>
